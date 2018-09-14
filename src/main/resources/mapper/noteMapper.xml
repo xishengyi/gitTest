@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noteNS">
+   <resultMap type="Note" id="noteResultMap">
+   		<id property="id" column="id"></id>
+   		<result property="name" column="name"></result>
+   		<result property="note" column="note"></result>
+   </resultMap>
+   
+    <!--实现数据增加-->
+    <insert id="doCreate" parameterType="Note">
+        INSERT INTO note(name,note)VALUES (#{name},#{note})
+    </insert>
+    <!--查询标记名称-->
+    <select id="findByName" parameterType="String" resultMap="noteResultMap">
+        SELECT id,name,note FROM note WHERE name=#{name}
+     </select>
+     <!--查询全部数据-->
+    <select id="findAll" parameterType="java.util.List" resultMap="noteResultMap">
+        SELECT id,name,note FROM note
+    </select>
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Note">
+        UPDATE note SET name=#{name},note=#{note} WHERE id=#{id}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM note
+        <where>
+            id IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="noteResultMap">
+        SELECT id,name,note FROM note LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(id) FROM note
+    </select>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="coreNS">
+   <resultMap type="Core" id="coreResultMap">
+   		<id property="qid" column="qid"></id>
+   		<result property="qname" column="qname"></result>
+   		<result property="snum" column="snum"></result>
+   		<result property="score" column="score"></result>
+   		<result property="percent" column="percent"></result>
+   		<result property="acore" column="acore"></result>
+   		
+   </resultMap>
+   
+    <!--实现数据增加-->
+    <insert id="doCreate" parameterType="Core">
+        INSERT INTO note(qid,qname,snum,score,percent,acore)VALUES (#{qid},#{qname},#{snum},#{score},#{percent},#{acore})
+    </insert>
+    <!--查询标记名称-->
+    <select id="findByName" parameterType="String" resultMap="coreResultMap">
+        SELECT qid,qname,snum,score,percent,acore FROM core WHERE qname=#{qname}
+     </select>
+     <!--查询全部数据-->
+    <select id="findAll" parameterType="java.util.List" resultMap="coreResultMap">
+        SELECT qid,qname,snum,score,percent,acore FROM core
+    </select>
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Core">
+        UPDATE core SET qname=#{qname},snum=#{snum},score=#{score},percent=#{percent},acore=#{acore} WHERE qid=#{qid}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM core
+        <where>
+            qid IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="coreResultMap">
+        SELECT qid,qname,snum,score,percent,acore FROM core LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(qid) FROM note
+    </select>
+</mapper>

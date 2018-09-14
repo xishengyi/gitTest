@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="XueyuanNS">
+   <resultMap id="xueyuanResultMap" type="Xueyuan">
+       <id property="xID" column="xID"/>
+       <result property="xname" column="xname"/>
+        <!--配置一对多关系-->
+        <collection property="zhuanyes" column="zid" javaType="java.util.List" ofType="Zhuanye"></collection>
+    </resultMap>
+    
+    <!--实现数据增加操作-->
+    <insert id="doCreate" parameterType="Xueyuan">
+        INSERT INTO xueyuan(xID,xname)VALUES (#{xID},#{xname})
+    </insert>
+    
+     <!--查询标记名称-->
+    <select id="findByName" parameterType="String" resultMap="xueyuanResultMap">
+        SELECT xID,xname FROM xueyuan WHERE xname=#{xname}
+     </select>
+     <!--查询全部数据-->
+    <select id="findAll" parameterType="java.util.List" resultMap="xueyuanResultMap">
+        SELECT xID,xname FROM xueyuan
+    </select>
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Xueyuan">
+        UPDATE xueyuan SET xname=#{xname} WHERE xID=#{xID}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM xueyuan
+        <where>
+            xID IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="xueyuanResultMap">
+        SELECT xID,xname FROM xueyuan LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(xID) FROM xueyuan
+    </select>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teacherNS">
+   <resultMap type="Teacher" id="teacherResultMap">
+   		<id property="tid" column="tid"></id>
+   		<result property="tname" column="tname"></result>
+   		
+   </resultMap>
+   
+    <!--实现数据增加-->
+    <insert id="doCreate" parameterType="Teacher">
+        INSERT INTO teacher (tid,tname) VALUES (#{tid},#{tname})
+    </insert>
+    <!--查询标记名称-->
+    <select id="findByName" parameterType="String" resultMap="teacherResultMap">
+        SELECT tid,tname FROM teacher WHERE tname=#{tname}
+     </select>
+     <!--查询全部数据-->
+    <select id="findAll" parameterType="java.util.List" resultMap="teacherResultMap">
+        SELECT tid,tname FROM teacher
+    </select>
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Teacher">
+        UPDATE teacher SET tname=#{tname} WHERE tid=#{tid}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM teacher
+        <where>
+            tid IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="teacherResultMap">
+        SELECT tid,tname FROM teacher LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(tid) FROM teacher
+    </select>
+</mapper>

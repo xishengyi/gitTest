@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ZhuanyeNS">
+    <resultMap id="zhuanyeResultMap" type="Zhuanye">
+        <id property="zid" column="zid"/>
+        <result property="zname" column="zname"/>
+        
+        <association property="xueyuan" column="xID" javaType="Xueyuan" resultMap="XueyuanNS.xueyuanResultMap"/>
+    </resultMap>
+
+    <!--实现数据增加操作-->
+    <insert id="doCreate" parameterType="Zhuanye">
+        INSERT INTO zhuanye(zid,zname,xID)VALUES (#{zid},#{zname},#{xueyuan.xID})
+    </insert>
+
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Zhuanye">
+        UPDATE zhuanye SET zname=#{zname},xID=#{xueyuan.xID} WHERE zid=#{zid}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM zhuanye
+        <where>
+            zid IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="zhuanyeResultMap">
+        SELECT zid,zname,xID FROM zhuanye LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(zid) FROM zhuanye
+    </select>
+
+</mapper>

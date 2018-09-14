@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kcpjbzNS">
+   <resultMap type="Kcpjbz" id="kcpjbzResultMap">
+   		<id property="uid" column="uid"></id>
+   		<result property="uname" column="uname"></result>
+   		<result property="uaim" column="uaim"></result>
+   		<result property="saim" column="saim"></result>
+   		<result property="khfs" column="khfs"></result>
+   		<result property="pjbz" column="pjbz"></result>
+   		<result property="qz" column="qz"></result>
+   		<result property="sjdcd" column="sjdcd"></result>
+   		
+   </resultMap>
+   
+    <!--实现数据增加-->
+    <insert id="doCreate" parameterType="Kcpjbz">
+        INSERT INTO kcpjbz (uid,uname,uaim,saim,khfs,pjbz,qz,sjdcd) VALUES (#{uid},#{uname},#{uaim},#{saim},#{khfs},#{pjbz},#{qz},#{sjdcd})
+    </insert>
+    <!--查询标记名称-->
+    <select id="findByName" parameterType="String" resultMap="kcpjbzResultMap">
+        SELECT uid,uname,uaim,saim,khfs,pjbz,qz,sjdcd FROM kcpjbz WHERE uname=#{uname}
+     </select>
+     <!--查询全部数据-->
+    <select id="findAll" parameterType="java.util.List" resultMap="kcpjbzResultMap">
+        SELECT uid,uname,uaim,saim,khfs,pjbz,qz,sjdcd FROM kcpjbz
+    </select>
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Kcpjbz">
+    	UPDATE kcpjbz SET uname=#{uname},uaim=#{uaim},saim=#{saim},khfs=#{khfs},pjbz=#{pjbz},qz=#{qz},sjdcd=#{sjdcd} WHERE uid=#{uid}
+    </update>
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM kcpjbz
+        <where>
+            uid IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="kcpjbzResultMap">
+        SELECT uid,uname,uaim,saim,khfs,pjbz,qz,sjdcd FROM kcpjbz LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(uid) FROM kcpjbz
+    </select>
+</mapper>

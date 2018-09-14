@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration   
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--配置别名-->
+	<typeAliases>
+        <typeAlias type="cn.ylcto.student.vo.Admin" alias="Admin"/>
+        <typeAlias type="cn.ylcto.student.vo.Classes" alias="Classes"/>
+        <typeAlias type="cn.ylcto.student.vo.Student" alias="Student"/>
+        <typeAlias type="cn.ylcto.student.vo.Note" alias="Note"/>
+        <typeAlias type="cn.ylcto.student.vo.Xueyuan" alias="Xueyuan"/>
+        <typeAlias type="cn.ylcto.student.vo.Zhuanye" alias="Zhuanye"/>
+        <typeAlias type="cn.ylcto.student.vo.Biye" alias="Biye"/>
+        <typeAlias type="cn.ylcto.student.vo.Yanshou" alias="Yanshou"/>
+        <typeAlias type="cn.ylcto.student.vo.Teacher" alias="Teacher"/>
+        <typeAlias type="cn.ylcto.student.vo.Course" alias="Course"/>
+        <typeAlias type="cn.ylcto.student.vo.Kcpjbz" alias="Kcpjbz"/>
+        <typeAlias type="cn.ylcto.student.vo.Core" alias="Core"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mapper/adminMapper.xml"/>
+        <mapper resource="mapper/classesMapper.xml"/>
+        <mapper resource="mapper/studentMapper.xml"/>
+        <mapper resource="mapper/noteMapper.xml"/>
+        <mapper resource="mapper/xueyuanMapper.xml"/>
+        <mapper resource="mapper/zhuanyeMapper.xml"/>
+        <mapper resource="mapper/biyeMapper.xml"/>
+        <mapper resource="mapper/yanshouMapper.xml"/>
+        <mapper resource="mapper/teacherMapper.xml"/>
+        <mapper resource="mapper/courseMapper.xml"/>
+        <mapper resource="mapper/kcpjbzMapper.xml"/>
+        <mapper resource="mapper/coreMapper.xml"/>
+    </mappers>
+</configuration>

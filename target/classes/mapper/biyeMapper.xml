@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BiyeNS">
+   <resultMap id="biyeResultMap" type="Biye">
+       <id property="byid" column="byid"/>
+       <result property="byname" column="byname"/>
+        <!--配置一对多关系-->
+        <collection property="yanshous" column="ysid" javaType="java.util.List" ofType="Yanshou"></collection>
+    </resultMap>
+    
+    <!--实现数据增加操作-->
+    <insert id="doCreate" parameterType="Biye">
+        INSERT INTO biye(byid,byname)VALUES (#{byid},#{byname})
+    </insert>
+    
+     <!--查询标记名称-->
+    <select id="findByName" parameterType="String" resultMap="biyeResultMap">
+        SELECT byid,byname FROM biye WHERE byname=#{byname}
+     </select>
+     <!--查询全部数据-->
+    <select id="findAll" parameterType="java.util.List" resultMap="biyeResultMap">
+        SELECT byid,byname FROM biye
+    </select>
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Biye">
+        UPDATE biye SET byname=#{byname} WHERE byid=#{byid}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM biye
+        <where>
+            byid IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="biyeResultMap">
+        SELECT byid,byname FROM biye LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(byid) FROM biye
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="YanshouNS">
+    <resultMap id="yanshouResultMap" type="Yanshou">
+        <id property="ysid" column="ysid"/>
+        <result property="bzcj" column="bzcj"/>
+        <result property="cnbh" column="cnbh"/>
+        <result property="bznr" column="bznr"/>
+        <result property="sjid" column="sjid"/>
+        <result property="zwcd" column="zwcd"/>       
+        <association property="biye" column="byid" javaType="Biye" resultMap="BiyeNS.biyeResultMap"/>
+    </resultMap>
+
+    <!--实现数据增加操作-->
+    <insert id="doCreate" parameterType="Yanshou">
+        INSERT INTO yanshou(ysid,bzcj,cnbh,bznr,sjid,zwcd,byid)VALUES (#{ysid},#{bzcj},#{cnbh},#{bznr},#{sjid},#{zwcd},#{biye.byid})
+    </insert>
+
+    <!--实现数据更新操作-->
+    <update id="doUpdate" parameterType="Yanshou">
+        UPDATE yanshou SET bzcj=#{bzcj},cnbh=#{cnbh},bznr=#{bznr},sjid=#{sjid},zwcd=#{zwcd},byid=#{biye.byid} WHERE ysid=#{ysid}
+    </update>
+
+
+    <!--删除数据操作-->
+    <delete id="doRemove" parameterType="java.util.List">
+        DELETE FROM yanshou
+        <where>
+            ysid IN
+            <foreach collection="list" item="ele" open="(" close=")" separator=",">
+                '${ele}'
+            </foreach>
+        </where>
+    </delete>
+
+    <!--编写分页实现-->
+    <select id="findBySplit" parameterType="java.util.Map" resultMap="yanshouResultMap">
+        SELECT ysid,bzcj,cnbh,bznr,sjid,zwcd,byid FROM yanshou LIMIT ${start},#{lineSize}
+    </select>
+
+    <!--统计全部数据量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(ysid) FROM yanshou
+    </select>
+
+</mapper>
